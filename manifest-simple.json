@@ -1,0 +1,15 @@
+{
+  "manifest_version": 3,
+  "name": "Sink URL Shortener Simple",
+  "version": "1.0",
+  "description": "将当前网页URL转换为短链接",
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "permissions": [
+    "activeTab"
+  ],
+  "host_permissions": [
+    "https://s.brmys.cn/*"
+  ]
+} 

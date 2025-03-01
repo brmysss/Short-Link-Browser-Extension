@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Sink URL Shortener</title>
+  <style>
+    body {
+      width: 320px;
+      padding: 16px;
+      font-family: system-ui, -apple-system, sans-serif;
+      margin: 0;
+    }
+    .container {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+    .header img {
+      width: 24px;
+      height: 24px;
+      margin-right: 8px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+    .header h1 {
+      font-size: 16px;
+      margin: 0;
+      color: #2563eb;
+    }
+    .input-group {
+      display: flex;
+      gap: 8px;
+    }
+    .slug-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .slug-label {
+      font-size: 14px;
+      color: #4b5563;
+      white-space: nowrap;
+    }
+    input {
+      flex: 1;
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+    input[type="checkbox"] {
+      flex: 0;
+      width: auto;
+    }
+    button {
+      padding: 8px 16px;
+      background-color: #2563eb;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background-color 0.2s;
+    }
+    button:hover {
+      background-color: #1d4ed8;
+    }
+    button:disabled {
+      background-color: #93c5fd;
+      cursor: not-allowed;
+    }
+    .result {
+      display: none;
+      padding: 12px;
+      background-color: #f3f4f6;
+      border-radius: 4px;
+    }
+    .error {
+      color: #dc2626;
+      display: none;
+      padding: 8px;
+      background-color: #fee2e2;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+    .footer {
+      margin-top: 12px;
+      font-size: 12px;
+      color: #6b7280;
+      text-align: center;
+    }
+    .custom-slug {
+      display: none;
+      margin-top: 8px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <img src="icons/icon48.svg" alt="Logo">
+      <h1>Sink 短链接生成器</h1>
+    </div>
+    <div class="input-group">
+      <input type="text" id="url" placeholder="当前页面URL" readonly>
+      <button id="shorten">缩短</button>
+    </div>
+    <div class="slug-group">
+      <input type="checkbox" id="useCustomSlug">
+      <span class="slug-label">使用自定义短码</span>
+    </div>
+    <div class="custom-slug" id="customSlugContainer">
+      <div class="input-group">
+        <input type="text" id="customSlug" placeholder="输入自定义短码（可选）">
+      </div>
+    </div>
+    <div class="result" id="result">
+      <div class="input-group">
+        <input type="text" id="shortUrl" readonly>
+        <button id="copy">复制</button>
+      </div>
+    </div>
+    <div class="error" id="error"></div>
+    <div class="footer">
+      由 Sink 提供支持 | s.brmys.cn
+    </div>
+  </div>
+  <script src="popup.js"></script>
+</body>
+</html> 

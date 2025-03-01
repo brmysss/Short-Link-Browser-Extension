@@ -1,0 +1,22 @@
+{
+  "manifest_version": 3,
+  "name": "Sink URL Shortener",
+  "version": "1.0",
+  "description": "将当前网页URL转换为短链接",
+  "icons": {
+    "16": "icons/头像1.png",
+    "48": "icons/头像1.png",
+    "128": "icons/头像1.png"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": "icons/头像1.png"
+  },
+  "permissions": [
+    "activeTab",
+    "storage"
+  ],
+  "host_permissions": [
+    "https://s.brmys.cn/*"
+  ]
+} 

@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>苏苏短链接生成器</title>
+  <style>
+    body {
+      width: 320px;
+      padding: 16px;
+      font-family: system-ui, -apple-system, sans-serif;
+      margin: 0;
+    }
+    .container {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+    .header-icon {
+      width: 24px;
+      height: 24px;
+      margin-right: 8px;
+    }
+    .header h1 {
+      font-size: 16px;
+      margin: 0;
+      color: #2563eb;
+    }
+    .input-group {
+      display: flex;
+      gap: 8px;
+    }
+    .slug-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .slug-label {
+      font-size: 14px;
+      color: #4b5563;
+      white-space: nowrap;
+    }
+    input {
+      flex: 1;
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+    input[type="checkbox"] {
+      flex: 0;
+      width: auto;
+    }
+    button {
+      padding: 8px 16px;
+      background-color: #2563eb;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background-color 0.2s;
+    }
+    button:hover {
+      background-color: #1d4ed8;
+    }
+    button:disabled {
+      background-color: #93c5fd;
+      cursor: not-allowed;
+    }
+    .result {
+      display: none;
+      padding: 12px;
+      background-color: #f3f4f6;
+      border-radius: 4px;
+    }
+    .error {
+      color: #dc2626;
+      display: none;
+      padding: 8px;
+      background-color: #fee2e2;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+    .footer {
+      margin-top: 12px;
+      font-size: 12px;
+      color: #6b7280;
+      text-align: center;
+    }
+    .footer a {
+      color: #2563eb;
+      text-decoration: none;
+      margin-top: 6px;
+      display: inline-block;
+      transition: color 0.2s;
+    }
+    .footer a:hover {
+      color: #1d4ed8;
+      text-decoration: underline;
+    }
+    .custom-slug {
+      display: none;
+      margin-top: 8px;
+    }
+    .history-section {
+      margin-top: 16px;
+      border-top: 1px solid #e5e7eb;
+      padding-top: 12px;
+    }
+    .history-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: #4b5563;
+      margin-bottom: 8px;
+    }
+    .history-list {
+      max-height: 150px;
+      overflow-y: auto;
+      border: 1px solid #e5e7eb;
+      border-radius: 4px;
+      background-color: #f9fafb;
+    }
+    .history-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 12px;
+      border-bottom: 1px solid #e5e7eb;
+    }
+    .history-item:last-child {
+      border-bottom: none;
+    }
+    .history-link {
+      color: #2563eb;
+      text-decoration: none;
+      font-size: 13px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 220px;
+      display: block;
+    }
+    .history-link:hover {
+      text-decoration: underline;
+    }
+    .history-stats {
+      font-size: 12px;
+      color: #6b7280;
+      cursor: pointer;
+      padding: 2px 6px;
+      border-radius: 4px;
+      background-color: #e5e7eb;
+    }
+    .history-stats:hover {
+      background-color: #d1d5db;
+    }
+    .history-delete {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background-color: #fee2e2;
+      color: #dc2626;
+      font-size: 14px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-left: 8px;
+      transition: all 0.2s ease;
+    }
+    .history-delete:hover {
+      background-color: #dc2626;
+      color: white;
+    }
+    .empty-history {
+      padding: 12px;
+      text-align: center;
+      color: #6b7280;
+      font-style: italic;
+      font-size: 13px;
+    }
+    .history-link-container {
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      flex: 1;
+    }
+    .history-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .history-time {
+      font-size: 11px;
+      color: #6b7280;
+      margin-top: 2px;
+    }
+    .tabs {
+      display: flex;
+      border-bottom: 1px solid #e5e7eb;
+      margin-bottom: 12px;
+    }
+    .tab {
+      padding: 8px 16px;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      color: #6b7280;
+    }
+    .tab.active {
+      border-bottom-color: #2563eb;
+      color: #2563eb;
+      font-weight: 500;
+    }
+    .service-selector {
+      margin-bottom: 12px;
+      padding: 10px;
+      background-color: #f3f4f6;
+      border-radius: 6px;
+      border: 1px solid #e5e7eb;
+    }
+    .service-option {
+      display: block;
+      margin-bottom: 8px;
+      position: relative;
+      padding-left: 26px;
+      cursor: pointer;
+      height: 24px;
+      line-height: 24px;
+    }
+    .service-option:last-child {
+      margin-bottom: 0;
+    }
+    .service-option input[type="radio"] {
+      position: absolute;
+      left: 0;
+      top: 4px;
+      width: 16px;
+      height: 16px;
+      cursor: pointer;
+      margin: 0;
+    }
+    .service-option label {
+      font-size: 14px;
+      color: #4b5563;
+      cursor: pointer;
+      user-select: none;
+      display: block;
+      line-height: 24px;
+    }
+    .api-key-container {
+      display: none;
+      margin-top: 8px;
+    }
+    .settings-tab-content {
+      display: none;
+    }
+    .service-info {
+      font-size: 12px;
+      color: #6b7280;
+      margin-top: 4px;
+      text-align: left;
+      font-style: italic;
+    }
+    .confirm-dialog {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+    }
+    .confirm-dialog.show {
+      display: flex;
+    }
+    .confirm-dialog-content {
+      background-color: white;
+      padding: 20px;
+      border-radius: 8px;
+      max-width: 280px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    .confirm-note {
+      font-size: 12px;
+      color: #6b7280;
+      margin-top: 8px;
+      font-style: italic;
+    }
+    .confirm-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      margin-top: 16px;
+    }
+    .confirm-button {
+      padding: 8px 16px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background-color 0.2s;
+    }
+    .confirm-button.cancel {
+      background-color: #e5e7eb;
+      color: #4b5563;
+    }
+    .confirm-button.cancel:hover {
+      background-color: #d1d5db;
+    }
+    .confirm-button.ok {
+      background-color: #dc2626;
+      color: white;
+    }
+    .confirm-button.ok:hover {
+      background-color: #b91c1c;
+    }
+    /* 服务标签样式 */
+    .history-service-tag {
+      display: inline-block;
+      padding: 2px 6px;
+      border-radius: 4px;
+      color: white;
+      font-size: 10px;
+      margin-right: 8px;
+      text-transform: uppercase;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <img src="icons/icon.svg" alt="Logo" class="header-icon">
+      <h1>苏苏短链接生成器</h1>
+    </div>
+    
+    <div class="tabs">
+      <div class="tab active" id="tab-create">创建短链</div>
+      <div class="tab" id="tab-history">历史记录</div>
+      <div class="tab" id="tab-settings">设置</div>
+    </div>
+    
+    <div id="create-section">
+      <div class="service-selector">
+        <div class="service-option">
+          <input type="radio" id="service-wzmy" name="service" value="wzmy" checked>
+          <label for="service-wzmy">WZ.my (默认)</label>
+        </div>
+        <div class="service-option">
+          <input type="radio" id="service-sink" name="service" value="sink">
+          <label for="service-sink">Sink</label>
+        </div>
+        <div class="service-option">
+          <input type="radio" id="service-dubco" name="service" value="dubco">
+          <label for="service-dubco">Dub.co</label>
+        </div>
+        <div class="service-option">
+          <input type="radio" id="service-tinyurl" name="service" value="tinyurl">
+          <label for="service-tinyurl">TinyURL</label>
+        </div>
+      </div>
+      
+      <div class="input-group">
+        <input type="text" id="url" placeholder="当前页面URL" readonly>
+        <button id="shorten">缩短</button>
+      </div>
+      <div class="slug-group">
+        <input type="checkbox" id="useCustomSlug">
+        <span class="slug-label">使用自定义短码</span>
+      </div>
+      <div class="custom-slug" id="customSlugContainer">
+        <div class="input-group">
+          <input type="text" id="customSlug" placeholder="输入自定义短码（可选）">
+        </div>
+      </div>
+      <div class="result" id="result">
+        <div class="input-group">
+          <input type="text" id="shortUrl" readonly>
+          <button id="copy">复制</button>
+        </div>
+        <div class="service-info" id="serviceInfo"></div>
+      </div>
+      <div class="error" id="error"></div>
+    </div>
+    
+    <div id="history-section" style="display: none;">
+      <div class="history-title">您的历史短链接</div>
+      <div class="history-list" id="historyList">
+        <!-- 历史记录将通过JavaScript动态添加 -->
+        <div class="empty-history" id="emptyHistory">暂无历史记录</div>
+      </div>
+    </div>
+    
+    <div id="settings-section" class="settings-tab-content">
+      <div class="history-title">服务设置</div>
+      <div class="service-selector">
+        <div class="service-option">
+          <input type="radio" id="default-service-wzmy" name="default-service" value="wzmy" checked>
+          <label for="default-service-wzmy">WZ.my (默认)</label>
+        </div>
+        <div class="service-option">
+          <input type="radio" id="default-service-sink" name="default-service" value="sink">
+          <label for="default-service-sink">Sink</label>
+        </div>
+        <div class="service-option">
+          <input type="radio" id="default-service-dubco" name="default-service" value="dubco">
+          <label for="default-service-dubco">Dub.co</label>
+        </div>
+        <div class="service-option">
+          <input type="radio" id="default-service-tinyurl" name="default-service" value="tinyurl">
+          <label for="default-service-tinyurl">TinyURL</label>
+        </div>
+      </div>
+      
+      <div class="history-title">Dub.co API密钥</div>
+      <div class="input-group">
+        <input type="password" id="dubco-api-key" placeholder="输入您的Dub.co API密钥">
+      </div>
+      
+      <div class="history-title">TinyURL API密钥</div>
+      <div class="input-group">
+        <input type="password" id="tinyurl-api-key" placeholder="输入您的TinyURL API密钥">
+      </div>
+      
+      <div class="history-title">Sink Site Token</div>
+      <div class="input-group">
+        <input type="password" id="sink-site-token" placeholder="输入您的Sink Site Token">
+      </div>
+      
+      <div class="input-group" style="margin-top: 8px;">
+        <button id="save-settings">保存设置</button>
+      </div>
+      <div class="error" id="settings-error" style="margin-top: 8px;"></div>
+    </div>
+    
+    <div class="footer">
+      @苏苏 公众号：白日梦与诗 提供支持
+      <br>
+      <a href="https://dub.sh/urls" target="_blank">🔗使用说明</a>
+    </div>
+    
+    <!-- 自定义确认对话框 -->
+    <div id="confirm-dialog" class="confirm-dialog">
+      <div class="confirm-dialog-content">
+        <p id="confirm-message">确定要从历史记录中删除此链接吗？</p>
+        <p class="confirm-note">注意：这只会从历史记录中移除，不会删除实际的短链接。</p>
+        <div class="confirm-buttons">
+          <button id="confirm-cancel" class="confirm-button cancel">取消</button>
+          <button id="confirm-ok" class="confirm-button ok">确定</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="popup.js"></script>
+</body>
+</html> 

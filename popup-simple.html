@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Sink URL Shortener</title>
+  <style>
+    body {
+      width: 300px;
+      padding: 10px;
+      font-family: system-ui, -apple-system, sans-serif;
+    }
+    button {
+      padding: 8px 16px;
+      background-color: #2563eb;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    input {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 10px;
+      box-sizing: border-box;
+    }
+    .result {
+      margin-top: 10px;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <h3>Sink 短链接生成器</h3>
+  <input type="text" id="url" placeholder="当前页面URL" readonly>
+  <button id="shorten">缩短</button>
+  <div class="result" id="result">
+    <p>短链接：</p>
+    <input type="text" id="shortUrl" readonly>
+    <button id="copy">复制</button>
+  </div>
+  <p id="error" style="color: red; display: none;"></p>
+  <script src="popup-simple.js"></script>
+</body>
+</html> 
