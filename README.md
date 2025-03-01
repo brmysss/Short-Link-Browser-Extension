@@ -16,12 +16,12 @@
 
 一、创建短链
 「创建链接」里一共放了4个短链接平台：
-
+![](https://img.brmysss.top/img/202503012226224.png)
 1、WZ.my 
 源于我使用的一个浏览器插件Url Shortener ，这个插件我已经稳定使用三年了。
 然后这个服务原网站是https://wz.my/，你也可以点击这个链接创建短链接，缺点是不能管理你的链接。
 因为是免费的，所以作为首选服务。
-[图片]
+
 2、Sink
 Sink是一个开源的短链接项目Sink，我将部属在了Cloudflare并绑定了我的域名。支持非常丰富的数据分析功能。
 参考部属教程：Cloudflare薅羊毛系列之短链接生成器附带统计图表分析功能|Github开源
@@ -35,19 +35,19 @@ Sink是一个开源的短链接项目Sink，我将部属在了Cloudflare并绑�
 由于Notion不能直接访问Obsidian生成的链接，所以我之前为了实现这个需求，都是借助这个平台中转一下。
 
 二、历史记录
-[图片]
+![](https://img.brmysss.top/img/202503012226543.png)
 创建的短链接可以查看历史记录，点击x可以删除记录（但是不会删除已创建的链接），点击数据可以查看该短链接的访问数据（仅支持Dub.co）
 
 三、设置
 1. wz.my为默认短链接平台，不需要设置；
 2. Sink为我自用的短链接服务；
 3. Dub.co需要自己注册
-[图片]
+![](https://img.brmysss.top/img/202503012227905.png)
 注册地址：https://dub.co/
 注册后点击API Keys-Create API Key即可创建
 4. TinyURL API
 打开https://tinyurl.com/并登录，点击右上角头像选择API-Create Token
-[图片]
+![](https://img.brmysss.top/img/202503012227084.png)
 
 🧙🏻‍♂️使用AI开发浏览器插件-短链接生成器
 🔗【使用教程】https://dub.sh/urls
